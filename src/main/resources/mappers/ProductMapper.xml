@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.bysj.work.babylatter.dao.ProductDao">
+
+	<select id="findAllproduct" resultType="com.bysj.work.babylatter.model.Product">
+	
+		SELECT * from nsfz_product WHERE nsfz_product.show=0 limit #{page},#{limit}
+	</select>
+	<select id="total" resultType="Integer">
+		select count(*) from  nsfz_product WHERE nsfz_product.show=0
+	</select>
+	<select id="findByproductName" resultType="com.bysj.work.babylatter.model.Product">
+	
+	SELECT * from nsfz_product WHERE (nsfz_product.productName like '%${productName}%' OR nsfz_product.description like '%${productName}%')
+	and nsfz_product.show=0 limit #{page},#{limit}
+	
+	</select>
+	
+	<select id="Onetotal" resultType="Integer">
+	select count(*) from nsfz_product WHERE nsfz_product.description like '%${productName}%'
+	</select>
+	
+	
+	<update id="productshow">
+	UPDATE nsfz_product SET nsfz_product.show=1 WHERE nsfz_product.productId=#{productId}
+	
+	</update>
+	
+	<select id="getOneproduct" resultType="com.bysj.work.babylatter.model.Product">
+		SELECT * FROM nsfz_product WHERE nsfz_product.productId=#{productId}
+	
+	</select>
+	
+	<update id="updateProduct">
+	UPDATE nsfz_product
+	SET nsfz_product.productName =#{product.productName} ,
+	nsfz_product.productAddress = #{product.productAddress},
+	nsfz_product.description=#{product.description},
+	nsfz_product.tprice=#{product.tprice},
+	nsfz_product.fprice=#{product.fprice},
+	nsfz_product.stock=#{product.stock},
+	nsfz_product.type=#{product.type}
+	WHERE
+		nsfz_product.productId = #{productId};
+	
+	</update>
+<!-- 	找到下架商品 -->
+	<select id="findAllunderproduct" resultType="com.bysj.work.babylatter.model.Product">
+	
+	SELECT * from nsfz_product WHERE nsfz_product.show=1 limit #{page},#{limit}
+	
+	</select>
+	<select id="undertotal" resultType="Integer">
+		select count(*) from  nsfz_product WHERE nsfz_product.show=1
+	</select>
+	
+	<update id="productshowup">
+	UPDATE nsfz_product SET nsfz_product.show=0 WHERE nsfz_product.productId=#{productId}
+	
+	</update>
+	
+	
+	
+<!-- 	新增商品 -->
+
+	<insert id="insertProduct">
+	INSERT INTO nsfz_product (nsfz_product.productName,nsfz_product.productImg,nsfz_product.productAddress,nsfz_product.description,
+	nsfz_product.tprice,nsfz_product.fprice,nsfz_product.stock,nsfz_product.type,nsfz_product.SHOW)
+VALUES
+	(#{productName},#{productImg},#{productAddress},#{description},#{tprice},#{fprice},#{stock},#{type},0)
+	</insert>
+	
+	<delete id="delproduct">
+	delete from nsfz_product where productId=#{productId}
+	
+	</delete>
+		</mapper>

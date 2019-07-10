@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.bysj.work.babylatter.dao.UserDao">
+
+	<select id="find" resultType="com.bysj.work.babylatter.model.User">
+	        select * from latter_user where loginName=#{loginName}  and password=#{password} 
+	    </select>
+
+	<select id="findAlluser" resultType="com.bysj.work.babylatter.model.UserAddress">
+	SELECT 
+		*
+	FROM
+		nsfz_user
+LEFT JOIN
+		nsfz_address
+on
+		nsfz_user.userId = nsfz_address.userId
+	LIMIT
+	#{page},#{limit}
+	</select>
+	<select id="findAllusertotal" resultType="Integer">
+	SELECT 
+		COUNT(*)
+	FROM
+		nsfz_user
+	
+	</select>
+	
+	<update id="deletefUser">
+	
+		UPDATE nsfz_user SET useType=1 WHERE userId=#{userId}
+	</update>
+	
+	<update id="enableUser">
+	
+		UPDATE nsfz_user SET useType=0 WHERE userId=#{userId}
+	</update>
+	
+	
+	<delete id="deletefUserAddress">
+	
+	delete from nsfz_address where nsfz_address.userId = #{userId}
+	</delete>
+	<select id="findByName" resultType="com.bysj.work.babylatter.model.UserAddress">
+	SELECT 
+		*
+	FROM
+		nsfz_user,
+		nsfz_address
+	WHERE
+		nsfz_user.userId = nsfz_address.userId
+	and nsfz_user.userName=#{userName}
+	</select>
+	
+<!-- 	后台 -->
+<select id="Lattertotal" resultType="com.bysj.work.babylatter.model.User">
+	SELECT 
+		*
+	FROM
+		latter_user
+	
+	</select>
+	<select id="LatterAlluser" resultType="com.bysj.work.babylatter.model.User">
+	SELECT 
+		*
+	FROM
+		latter_user LIMIT #{page},#{limit}
+	</select>
+	<select id="LatterfindByName" resultType="com.bysj.work.babylatter.model.User">
+	SELECT 
+		*
+	FROM
+		latter_user 
+WHERE
+     userName=#{userName}
+	</select>
+	
+	<update id="deletelUser">
+	
+		UPDATE latter_user SET useType=1 WHERE userId=#{userId}
+	</update>
+	
+	<update id="enableIUser">
+	
+		UPDATE latter_user SET useType=0 WHERE userId=#{userId}
+	</update>
+	
+	
+	<select id="findUserById" resultType="com.bysj.work.babylatter.model.User">
+	SELECT * from latter_user WHERE latter_user.userId=#{userId}
+	</select>
+	
+	<update id="updateMM">
+	UPDATE latter_user SET latter_user.password=#{password} WHERE userId=#{userId}
+	</update>
+	
+		</mapper>

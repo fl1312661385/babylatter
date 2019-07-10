@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.bysj.work.babylatter.dao.BillDao">
+
+	<select id="findAllbill" resultType="Integer">
+	SELECT count(*) FROM nsfz_bill
+	</select>
+	
+	<select id="getAllbill" resultType="com.bysj.work.babylatter.model.Bill">
+	SELECT * FROM nsfz_bill b,nsfz_order o WHERE b.orderId=o.orderId limit #{page},#{limit}
+	
+	</select>
+	
+	<select id="findByName" resultType="com.bysj.work.babylatter.model.Bill">
+	SELECT * FROM nsfz_bill b,nsfz_order o WHERE b.orderId=o.orderId and (userName like '%${replyName}%' or productName like '%${replyName}%') limit #{page},#{limit}
+	</select>
+	<select id="Onetotal" resultType="Integer">
+	
+	SELECT count(*) FROM nsfz_bill b,nsfz_order o WHERE b.orderId=o.orderId and (userName like '%${replyName}%' or productName like '%${replyName}%')
+	</select>
+	<delete id="delbill">
+	DELETE from nsfz_bill WHERE billid=#{billId};
+	</delete>
+	
+	</mapper>

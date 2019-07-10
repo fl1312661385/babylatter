@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.bysj.work.babylatter.dao.CommentDao">
+		<select id="findAllComment" resultType="com.bysj.work.babylatter.model.Comment">
+		SELECT * FROM nsfz_comment
+		</select>
+	<select id="getAllComment" resultType="com.bysj.work.babylatter.model.Comment">
+		SELECT * from nsfz_comment as c,nsfz_product as  p,nsfz_user as u WHERE c.userId=u.userId and c.productId=p.productId LIMIT #{page},#{limit}
+	</select>
+	
+	<select id="findByName" resultType="com.bysj.work.babylatter.model.Comment">
+	SELECT * from nsfz_comment as c,nsfz_product as  p,nsfz_user as u WHERE c.userId=u.userId and c.productId=p.productId AND (replyName like '%${replyName}%' or productName LIKE '%${replyName}%') limit #{page},#{limit}
+	
+	</select>
+	
+	<select id="Onetotal" resultType="Integer">
+	
+	select count(*) from nsfz_comment as c,nsfz_product as  p,nsfz_user as u WHERE c.userId=u.userId and c.productId=p.productId AND (replyName like '%${replyName}%' or productName LIKE '%${replyName}%')
+	</select>
+	<select id="getOnecomment" resultType="com.bysj.work.babylatter.model.Comment">
+	SELECT * FROM nsfz_comment c,nsfz_product p WHERE commentId =#{commentId} and c.productId=p.productId
+	</select>
+	<update id="updateComment">
+	UPDATE nsfz_comment
+	SET nsfz_comment.content =#{comment.content},
+	nsfz_comment.commentDate = #{comment.commentDate},
+	nsfz_comment.commentTime=#{comment.commentTime},
+	nsfz_comment.state=#{comment.state}	
+	WHERE
+		nsfz_comment.commentId = #{commentId}
+	</update>
+	
+	<delete id="delComment">
+	DELETE FROM nsfz_comment WHERE commentId=#{commentId}
+	
+	</delete>
+	
+	
+	
+		</mapper>

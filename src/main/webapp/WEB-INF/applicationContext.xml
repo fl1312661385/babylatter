@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+	
+	<context:component-scan
+		base-package="com.bysj.work.babylatter" />
+		
+<!-- 		1.数据源 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/nsfz" />
+		<property name="username" value="root" />
+		<property name="password" value="1234" />
+	</bean>
+	
+	<!-- 事务管理器,使用spring的DataSourceTransactionManger -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!--支持注解式使用 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+<!-- 	mybatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- mapping.xml配置文件所在的位置 -->
+		<property name="mapperLocations" value="classpath:mappers/*.xml" />
+		<property name="configuration">
+
+			<bean class="org.apache.ibatis.session.Configuration">
+					<property name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>
+					<property name="mapUnderscoreToCamelCase" value="true"/>
+
+			</bean>
+
+		</property>
+	</bean>
+	
+	
+	
+	<!-- sqlSessionTemplate,直接构建mybatis的sqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<mybatis:scan base-package="com.bysj.work.babylatter.dao"/>
+	
+	
+	
+</beans>

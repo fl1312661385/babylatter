@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.bysj.work.babylatter.dao.OrderDao">
+		<select id="findAllorder" resultType="com.bysj.work.babylatter.model.Order">
+		SELECT * from nsfz_order limit #{page},#{limit}
+		
+		
+		</select>
+	<select id="total" resultType="Integer">
+		select count(*) from  nsfz_order
+	</select>
+	
+	<select id="findByName" resultType="com.bysj.work.babylatter.model.Order">
+	
+
+	SELECT * from nsfz_order WHERE nsfz_order.userName like '%${userName}%' limit #{page},#{limit}
+	</select>
+	
+	<select id="Onetotal" resultType="Integer">
+	
+		select count(*) from nsfz_order WHERE nsfz_order.userName like '%${userName}%'
+	</select>
+	
+	<update id="sendgoods">
+	UPDATE nsfz_order SET orderType=2 WHERE orderId=#{orderId}
+	</update>
+	<select id="getOneorder" resultType="com.bysj.work.babylatter.model.Order">
+	SELECT * FROM nsfz_order WHERE orderId=#{orderId}
+	</select>
+	
+	<update id="updateorder">
+	UPDATE nsfz_order
+	SET nsfz_order.userName =#{order.userName} ,
+	nsfz_order.address = #{order.address},
+	nsfz_order.postcode=#{order.postcode},
+	nsfz_order.mobile=#{order.mobile},
+	nsfz_order.orderType=#{order.orderType}
+	WHERE
+		nsfz_order.orderId = #{orderId};
+	
+	</update>
+	
+	<delete id="delorder">
+		DELETE FROM nsfz_order WHERE orderId=#{orderId}
+	
+	</delete>
+	
+	
+	
+		</mapper>
